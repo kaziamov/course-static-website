@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getCourse, getLesson, getLessons } from '@/lib/markdown'
-import MarkdownRenderer from '@/components/MarkdownRenderer'
+import MarkdownRenderer from '../../../components/MarkdownRenderer'
 import DisqusComments from '@/components/DisqusComments'
 
 export default async function LessonPage({
