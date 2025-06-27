@@ -35,7 +35,7 @@ export async function getCourses(): Promise<Course[]> {  try {
     for (const courseDir of courseDirectories) {
       const courseDirectoryPath = path.join(coursesDirectory, courseDir)
       const courseFilePath = path.join(courseDirectoryPath, 'course.md')
-      
+
       if (fs.existsSync(courseFilePath)) {
         const fileContents = fs.readFileSync(courseFilePath, 'utf8')
         const { data, content } = matter(fileContents)
