@@ -11,7 +11,7 @@ export default async function Home() {
           Добро пожаловать на наши курсы!
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Изучайте новые технологии с нашими подробными курсами, 
+          Изучайте новые технологии с нашими подробными курсами,
           созданными из Markdown файлов с поддержкой видео и комментариев.
         </p>
       </div>
@@ -30,7 +30,7 @@ export default async function Home() {
                 <span className="text-sm text-gray-500">
                   {course.lessons} уроков
                 </span>
-                <Link 
+                <Link
                   href={`/courses/${course.slug}`}
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                 >

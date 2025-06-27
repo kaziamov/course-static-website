@@ -1,8 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { remark } from 'remark'
-import html from 'remark-html'
 
 const contentDirectory = path.join(process.cwd(), 'content')
 const coursesDirectory = path.join(contentDirectory, 'courses')
@@ -37,18 +35,18 @@ export async function getCourses(): Promise<Course[]> {
     for (const courseDir of courseDirectories) {
       const courseDirectoryPath = path.join(coursesDirectory, courseDir)
       const courseFilePath = path.join(courseDirectoryPath, 'course.md')
-      
+
       if (fs.existsSync(courseFilePath)) {
         const fileContents = fs.readFileSync(courseFilePath, 'utf8')
         const { data, content } = matter(fileContents)
-        
+
         // Конвертируем Markdown в HTML
         const processedContent = await remark().use(html).process(content)
         const contentHtml = processedContent.toString()
           // Подсчитываем количество уроков
         const lessonFiles = fs.readdirSync(courseDirectoryPath)
           .filter((file: string) => file.endsWith('.md') && file !== 'course.md')
-        
+
         courses.push({
           slug: courseDir,
           title: data.title || courseDir,
@@ -70,7 +68,7 @@ export async function getCourse(slug: string): Promise<Course | null> {
   try {
     const courseDirectoryPath = path.join(coursesDirectory, slug)
     const courseFilePath = path.join(courseDirectoryPath, 'course.md')
-    
+
     if (!fs.existsSync(courseFilePath)) {
       return null
     }
@@ -80,7 +78,7 @@ export async function getCourse(slug: string): Promise<Course | null> {
       // Подсчитываем количество уроков
     const lessonFiles = fs.readdirSync(courseDirectoryPath)
       .filter((file: string) => file.endsWith('.md') && file !== 'course.md')
-    
+
     return {
       slug,
       title: data.title || slug,
@@ -97,7 +95,7 @@ export async function getCourse(slug: string): Promise<Course | null> {
 export async function getLessons(courseSlug: string): Promise<Lesson[]> {
   try {
     const courseDirectoryPath = path.join(coursesDirectory, courseSlug)
-    
+
     if (!fs.existsSync(courseDirectoryPath)) {
       return []
     }    const lessonFiles = fs.readdirSync(courseDirectoryPath)
@@ -110,9 +108,9 @@ export async function getLessons(courseSlug: string): Promise<Lesson[]> {
       const lessonFilePath = path.join(courseDirectoryPath, lessonFile)
       const fileContents = fs.readFileSync(lessonFilePath, 'utf8')
       const { data, content } = matter(fileContents)
-      
+
       const lessonSlug = lessonFile.replace('.md', '')
-      
+
       lessons.push({
         slug: lessonSlug,
         title: data.title || lessonSlug,
@@ -133,14 +131,14 @@ export async function getLessons(courseSlug: string): Promise<Lesson[]> {
 export async function getLesson(courseSlug: string, lessonSlug: string): Promise<Lesson | null> {
   try {
     const lessonFilePath = path.join(coursesDirectory, courseSlug, `${lessonSlug}.md`)
-    
+
     if (!fs.existsSync(lessonFilePath)) {
       return null
     }
 
     const fileContents = fs.readFileSync(lessonFilePath, 'utf8')
     const { data, content } = matter(fileContents)
-    
+
     return {
       slug: lessonSlug,
       title: data.title || lessonSlug,

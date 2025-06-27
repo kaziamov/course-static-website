@@ -7,11 +7,11 @@ interface YouTubeEmbedProps {
   height?: string
 }
 
-export default function YouTubeEmbed({ 
-  videoId, 
-  title = "YouTube video", 
-  width = "100%", 
-  height = "400" 
+export default function YouTubeEmbed({
+  videoId,
+  title = "YouTube video",
+  width = "100%",
+  height = "400"
 }: YouTubeEmbedProps) {
   return (
     <div className="my-6">

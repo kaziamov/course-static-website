@@ -68,14 +68,14 @@ let globalVar = "Глобальная переменная";
 
 function outerFunction() {
     let outerVar = "Внешняя переменная";
-    
+
     function innerFunction() {
         let innerVar = "Внутренняя переменная";
         console.log(globalVar); // Доступна
         console.log(outerVar);  // Доступна
         console.log(innerVar);  // Доступна
     }
-    
+
     innerFunction();
     // console.log(innerVar); // Ошибка! Не доступна
 }
