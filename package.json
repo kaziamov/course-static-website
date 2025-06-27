@@ -8,17 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export"
-  },
-  "dependencies": {
+  },  "dependencies": {
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "@next/mdx": "^14.2.5",
-    "@mdx-js/loader": "^3.0.1",
-    "@mdx-js/react": "^3.0.1",
     "gray-matter": "^4.0.3",
-    "remark": "^15.0.1",
-    "remark-html": "^16.0.1",
     "disqus-react": "^1.1.5"
   },
   "devDependencies": {

@@ -2,6 +2,14 @@
 
 Статический сайт на Next.js, который генерируется из Markdown файлов с поддержкой YouTube видео и Disqus комментариев.
 
+## 🚀 Быстрый деплой
+
+Для быстрого деплоя на GitHub Pages смотрите **[DEPLOY.md](DEPLOY.md)**
+
+## 📚 Создание курсов
+
+Инструкция по созданию курсов в **[COURSE_GUIDE.md](COURSE_GUIDE.md)**
+
 ## Возможности
 
 - 📚 Автоматическая генерация курсов из Markdown файлов
@@ -87,24 +95,29 @@ order: 1
 
 ## Деплой на GitHub Pages
 
-1. **Установите gh-pages:**
+### Автоматический деплой с GitHub Actions
+
+1. **Создайте репозиторий на GitHub**
+2. **Настройте GitHub Pages:**
+   - Перейдите в Settings → Pages
+   - Source: "GitHub Actions"
+3. **Добавьте секреты в GitHub:**
+   - Settings → Secrets and variables → Actions
+   - Добавьте:
+     - `DISQUS_SHORTNAME` - ваш shortname от Disqus
+     - `SITE_URL` - URL вашего сайта (например: https://username.github.io/repository-name)
+
+4. **Загрузите код:**
 ```bash
-npm install --save-dev gh-pages
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/username/repository-name.git
+git push -u origin main
 ```
 
-2. **Добавьте в package.json:**
-```json
-{
-  "scripts": {
-    "deploy": "next build && next export && gh-pages -d out"
-  }
-}
-```
-
-3. **Деплойте:**
-```bash
-npm run deploy
-```
+Сайт автоматически развернется на GitHub Pages после пуша!
 
 ## Деплой на Netlify/Vercel
 
