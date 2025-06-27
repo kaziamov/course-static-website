@@ -65,14 +65,14 @@ body {
   .prose blockquote {
     @apply border-l-4 border-blue-500 pl-4 italic mb-4;
   }
-  
+
   .youtube-embed {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
     margin: 1.5rem 0;
   }
-  
+
   .youtube-embed iframe {
     position: absolute;
     top: 0;

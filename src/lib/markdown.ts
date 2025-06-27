@@ -21,10 +21,10 @@ export interface Lesson {
   order?: number
 }
 
-export async function getCourses(): Promise<Course[]> {
-  try {
+export async function getCourses(): Promise<Course[]> {  try {
     if (!fs.existsSync(coursesDirectory)) {
-      return []    }
+      return []
+    }
 
     const courseDirectories = fs.readdirSync(coursesDirectory, { withFileTypes: true })
       .filter((dirent: any) => dirent.isDirectory())
@@ -35,15 +35,15 @@ export async function getCourses(): Promise<Course[]> {
     for (const courseDir of courseDirectories) {
       const courseDirectoryPath = path.join(coursesDirectory, courseDir)
       const courseFilePath = path.join(courseDirectoryPath, 'course.md')
-
+      
       if (fs.existsSync(courseFilePath)) {
         const fileContents = fs.readFileSync(courseFilePath, 'utf8')
         const { data, content } = matter(fileContents)
 
-        // Конвертируем Markdown в HTML
-        const processedContent = await remark().use(html).process(content)
-        const contentHtml = processedContent.toString()
-          // Подсчитываем количество уроков
+        // Простая обработка без remark - используем raw content
+        const contentHtml = content
+
+        // Подсчитываем количество уроков
         const lessonFiles = fs.readdirSync(courseDirectoryPath)
           .filter((file: string) => file.endsWith('.md') && file !== 'course.md')
 
