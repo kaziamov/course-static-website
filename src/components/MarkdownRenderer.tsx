@@ -1,7 +1,6 @@
 'use client'
 
 import { useMemo } from 'react'
-import YouTubeEmbed from './YouTubeEmbed'
 
 interface MarkdownRendererProps {
   content: string
@@ -9,7 +8,7 @@ interface MarkdownRendererProps {
 
 export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const processedContent = useMemo(() => {
-    // Простой парсер Markdown с поддержкой YouTube
+    // Простой парсер Markdown
     let html = content
 
     // Заголовки
@@ -29,43 +28,32 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     // Блоки кода
     html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
 
-    // Ссылки
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-
-    // Параграфы
-    html = html.split('\n\n').map(paragraph => {
-      if (paragraph.trim() && !paragraph.startsWith('<')) {
-        return `<p>${paragraph.trim()}</p>`
+    // Ссылки и YouTube
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
+      if (text === 'youtube') {
+        return `<div class="youtube-embed"><iframe src="https://www.youtube.com/embed/${url}" frameborder="0" allowfullscreen></iframe></div>`
       }
-      return paragraph
-    }).join('\n\n')
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`
+    })
 
-    return html
+    // Простая обработка параграфов
+    const lines = html.split('\n')
+    const processedLines: string[] = []
+    
+    for (const line of lines) {
+      const trimmedLine = line.trim()
+      if (trimmedLine && !trimmedLine.startsWith('<')) {
+        processedLines.push(`<p>${trimmedLine}</p>`)
+      } else if (trimmedLine) {
+        processedLines.push(trimmedLine)
+      }
+    }
+
+    return processedLines.join('\n')
   }, [content])
-
-  // Извлекаем YouTube видео из контента
-  const youtubeRegex = /\[youtube\]\(([^)]+)\)/g
-  const youtubeMatches = [...content.matchAll(youtubeRegex)]
-
-  // Удаляем YouTube теги из обработанного контента
-  const contentWithoutYoutube = processedContent.replace(/\[youtube\]\(([^)]+)\)/g, '{{YOUTUBE_PLACEHOLDER}}')
-
-  // Разбиваем контент на части для вставки YouTube видео
-  const parts = contentWithoutYoutube.split('{{YOUTUBE_PLACEHOLDER}}')
-
   return (
     <div className="prose max-w-none">
-      {parts.map((part, index) => (
-        <div key={index}>
-          <div dangerouslySetInnerHTML={{ __html: part }} />
-          {youtubeMatches[index] && (
-            <YouTubeEmbed
-              videoId={youtubeMatches[index][1]}
-              title={`Видео ${index + 1}`}
-            />
-          )}
-        </div>
-      ))}
+      <div dangerouslySetInnerHTML={{ __html: processedContent }} />
     </div>
   )
 }
